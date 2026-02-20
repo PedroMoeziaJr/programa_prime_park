@@ -67,6 +67,13 @@ p {
     color: white;
 }
 
+/* VOLTAR nas telas de entrada/saída — versão menor */
+.screen .btn-back {
+    padding: 12px 30px;
+    font-size: 22px;
+    margin-top: 10px;
+}
+
 /* ===========================
    CAMPO DE DIGITAÇÃO
 =========================== */
@@ -142,12 +149,12 @@ p {
     width: 100%;
 }
 
-/* AQUI ESTÁ A CORREÇÃO REAL */
+/* Correção REAL: botões menores */
 .keyboard-actions .key {
-    width: auto;          /* NÃO ocupa mais 100% */
-    padding: 12px 24px;   /* menor */
-    font-size: 22px;      /* menor */
-    min-width: 140px;     /* tamanho confortável */
+    width: auto;
+    padding: 12px 24px;
+    font-size: 22px;
+    min-width: 140px;
 }
 
 .key-action {
@@ -161,28 +168,29 @@ p {
 }
 
 /* ===========================
-   TECLADO DE SENHA (RELATÓRIO DO PÁTIO)
+   TELA DE RELATÓRIO DO PÁTIO
 =========================== */
 .password-input {
-    font-size: 40px;
-    padding: 15px;
-    width: 50%;
+    font-size: 36px;
+    padding: 12px;
+    width: 40%;
     text-align: center;
     border-radius: 10px;
     border: 3px solid #333;
     margin-bottom: 20px;
 }
 
+/* Teclado numérico compacto */
 .password-keyboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    width: 50%;
+    gap: 12px;
+    width: 40%;
 }
 
 .password-key {
-    padding: 20px;
-    font-size: 28px;
+    padding: 18px;
+    font-size: 26px;
     background: #28a745;
     color: white;
     border-radius: 10px;

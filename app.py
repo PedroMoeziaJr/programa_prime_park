@@ -45,8 +45,8 @@ def emitir_nfse(placa, valor):
 
     dados = {
         "prestador": {
-            "cnpj": "00000000000000",
-            "inscricao_municipal": "123456",
+            "cnpj": "08505544000117",
+            "inscricao_municipal": "0748271200137",
             "codigo_municipio": "5300108"
         },
         "tomador": {

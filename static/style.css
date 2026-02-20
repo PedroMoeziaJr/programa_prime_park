@@ -83,10 +83,10 @@ p {
 =========================== */
 .keyboard-container {
     display: flex;
-    justify-content: space-between; /* usa toda a largura */
+    justify-content: space-between;
     align-items: flex-start;
     width: 90vw;
-    height: 50vh; /* garante que cabe em qualquer tela */
+    height: 50vh;
     padding: 0 20px;
 }
 
@@ -98,7 +98,7 @@ p {
     width: 60%;
 }
 
-/* NÚMEROS — AGORA EM 2 COLUNAS HORIZONTAIS */
+/* NÚMEROS — 2 colunas horizontais */
 .keyboard-numbers {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -129,30 +129,30 @@ p {
 }
 
 /* ===========================
-   AÇÕES
+   AÇÕES — BOTÕES MENORES
 =========================== */
 .keyboard-actions {
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 25px;
     width: 100%;
 }
 
 .key-action {
     background: #dc3545;
     color: white;
-    padding: 25px 50px;
-    font-size: 36px;
-    border-radius: 12px;
+    padding: 15px 30px;   /* reduzido */
+    font-size: 28px;      /* reduzido */
+    border-radius: 10px;
 }
 
 .key-confirm {
     background: #ffc107;
     color: #000;
-    padding: 25px 50px;
-    font-size: 36px;
-    border-radius: 12px;
+    padding: 15px 30px;   /* reduzido */
+    font-size: 28px;      /* reduzido */
+    border-radius: 10px;
 }
 
 /* ===========================
@@ -164,3 +164,4 @@ p {
     margin-bottom: 10px;
     font-size: 24px;
 }
+

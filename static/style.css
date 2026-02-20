@@ -1,3 +1,6 @@
+/* ===========================
+   RESET E BASE
+=========================== */
 * {
     box-sizing: border-box;
 }
@@ -106,7 +109,9 @@ p {
     width: 25%;
 }
 
-/* TECLAS */
+/* ===========================
+   TECLAS
+=========================== */
 .key {
     padding: 22px 26px;
     font-size: 30px;
@@ -130,27 +135,29 @@ p {
    BOTÕES APAGAR / CONFIRMAR
 =========================== */
 .keyboard-actions {
-    margin-top: 10px;
+    margin-top: 5px;
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 20px;
     width: 100%;
+}
+
+/* AQUI ESTÁ A CORREÇÃO REAL */
+.keyboard-actions .key {
+    width: auto;          /* NÃO ocupa mais 100% */
+    padding: 12px 24px;   /* menor */
+    font-size: 22px;      /* menor */
+    min-width: 140px;     /* tamanho confortável */
 }
 
 .key-action {
     background: #dc3545;
     color: white;
-    padding: 12px 28px;
-    font-size: 26px;
-    border-radius: 10px;
 }
 
 .key-confirm {
     background: #ffc107;
     color: #000;
-    padding: 12px 28px;
-    font-size: 26px;
-    border-radius: 10px;
 }
 
 /* ===========================

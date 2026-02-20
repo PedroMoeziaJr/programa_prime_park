@@ -2,13 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="/static/style.css">
+    <meta charset="utf-8">
 </head>
 <body onload="window.print()">
-    <h1>COMPROVANTE DE SAÍDA</h1>
-    <p>Placa: {{ placa }}</p>
-    <p>Entrada: {{ entrada }}</p>
-    <p>Saída: {{ saida }}</p>
-    <p>Valor pago: R$ {{ "%.2f"|format(valor) }}</p>
-    <a href="/"><button>CONCLUIR</button></a>
+    <div class="screen">
+        <h1>COMPROVANTE DE SAÍDA</h1>
+        <p>Placa: {{ placa }}</p>
+        <p>Entrada: {{ entrada }}</p>
+        <p>Saída: {{ saida }}</p>
+        <p>Valor pago: R$ {{ "%.2f"|format(valor) }}</p>
+        <a href="/"><button class="btn-main">CONCLUIR</button></a>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 10000);
+    </script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="utf-8">
+</head>
+<body>
+    <div class="screen">
+        <h1>Carros no Pátio</h1>
+
+        {% if abertas %}
+            <table class="patio-table">
+                <tr>
+                    <th>Placa</th>
+                    <th>Entrada</th>
+                    <th>Ações</th>
+                </tr>
+                {% for e in abertas %}
+                <tr>
+                    <td>{{ e.placa }}</td>
+                    <td>{{ e.entrada }}</td>
+                    <td>
+                        <form method="POST" action="/admin_remover/{{ e.id }}">
+                            <button type="submit" class="btn-remove">REMOVER</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Nenhum veículo no pátio.</p>
+        {% endif %}
+
+        <a href="/"><button class="btn-back">VOLTAR</button></a>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 10000);
+    </script>
+</body>
+</html>

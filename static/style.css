@@ -69,9 +69,9 @@ p {
 
 /* VOLTAR nas telas de entrada/saída — versão menor */
 .screen .btn-back {
-    padding: 12px 30px;
-    font-size: 22px;
-    margin-top: 10px;
+    padding: 10px 26px;
+    font-size: 20px;
+    margin-top: 5px;
 }
 
 /* ===========================
@@ -152,9 +152,9 @@ p {
 /* Correção REAL: botões menores */
 .keyboard-actions .key {
     width: auto;
-    padding: 12px 24px;
-    font-size: 22px;
-    min-width: 140px;
+    padding: 10px 22px;
+    font-size: 20px;
+    min-width: 120px;
 }
 
 .key-action {
@@ -168,8 +168,16 @@ p {
 }
 
 /* ===========================
-   TELA DE RELATÓRIO DO PÁTIO
+   TELA DE RELATÓRIO DO PÁTIO — RESTAURADA
 =========================== */
+
+.admin-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
 .password-input {
     font-size: 36px;
     padding: 12px;
@@ -180,12 +188,12 @@ p {
     margin-bottom: 20px;
 }
 
-/* Teclado numérico compacto */
+/* Teclado numérico vertical (como era antes) */
 .password-keyboard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 20%;
 }
 
 .password-key {

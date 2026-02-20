@@ -26,17 +26,31 @@ def index():
     return render_template("index.html")
 
 # ===========================
-# ENTRADA
+# ENTRADA — DIGITAÇÃO DA PLACA
 # ===========================
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
     if request.method == "POST":
         placa = request.form["placa"]
-        nova = Estadia(placa=placa, entrada=datetime.now())
-        db.session.add(nova)
-        db.session.commit()
-        return redirect("/")
+        return render_template("confirmar_entrada.html", placa=placa)
+
     return render_template("entrada.html")
+
+# ===========================
+# CONFIRMAR ENTRADA
+# ===========================
+@app.route("/confirmar_entrada", methods=["POST"])
+def confirmar_entrada():
+    placa = request.form["placa"]
+
+    nova = Estadia(placa=placa, entrada=datetime.now())
+    db.session.add(nova)
+    db.session.commit()
+
+    # Aqui você pode chamar a impressora se quiser
+    # imprimir_ticket(placa)
+
+    return redirect("/")
 
 # ===========================
 # SAÍDA
@@ -109,3 +123,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+

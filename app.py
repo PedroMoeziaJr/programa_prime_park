@@ -1,158 +1,111 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import math
-import os
+import pandas as pd
 
 app = Flask(__name__)
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "prime_park.db")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = "prime_park_secret"
-
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///primepark.db"
 db = SQLAlchemy(app)
 
-
+# ===========================
+# BANCO DE DADOS
+# ===========================
 class Estadia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    placa = db.Column(db.String(10), nullable=False)
-    entrada = db.Column(db.DateTime, nullable=False)
+    placa = db.Column(db.String(10))
+    entrada = db.Column(db.DateTime)
     saida = db.Column(db.DateTime, nullable=True)
+    meio_pagamento = db.Column(db.String(20), nullable=True)
     valor = db.Column(db.Float, nullable=True)
-    pago = db.Column(db.Boolean, default=False)
 
-    def calcular_valor(self):
-        if not self.saida:
-            return 0.0
-
-        minutos = (self.saida - self.entrada).total_seconds() / 60
-        horas = math.ceil(minutos / 60)
-
-        if horas <= 1:
-            return 5.0
-        else:
-            return 5.0 + (horas - 1) * 3.0
-
-
-with app.app_context():
-    db.create_all()
-
-
+# ===========================
+# TELA INICIAL
+# ===========================
 @app.route("/")
 def index():
     return render_template("index.html")
 
-
+# ===========================
+# ENTRADA
+# ===========================
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
     if request.method == "POST":
-        placa = request.form.get("placa", "").upper().strip()
-        if not placa:
-            return redirect(url_for("entrada"))
-        return redirect(url_for("confirmar_entrada", placa=placa))
+        placa = request.form["placa"]
+        nova = Estadia(placa=placa, entrada=datetime.now())
+        db.session.add(nova)
+        db.session.commit()
+        return redirect("/")
     return render_template("entrada.html")
 
-
-@app.route("/confirmar_entrada")
-def confirmar_entrada():
-    placa = request.args.get("placa", "").upper().strip()
-    if not placa:
-        return redirect(url_for("entrada"))
-    return render_template("confirmar_entrada.html", placa=placa)
-
-
-@app.route("/confirmar_entrada_ok", methods=["POST"])
-def confirmar_entrada_ok():
-    placa = request.form.get("placa", "").upper().strip()
-    if not placa:
-        return redirect(url_for("entrada"))
-
-    agora = datetime.now()
-    estadia = Estadia(placa=placa, entrada=agora)
-    db.session.add(estadia)
-    db.session.commit()
-
-    return render_template("ticket_entrada.html", placa=placa, entrada=agora)
-
-
+# ===========================
+# SAÍDA
+# ===========================
 @app.route("/saida", methods=["GET", "POST"])
 def saida():
     if request.method == "POST":
-        placa = request.form.get("placa", "").upper().strip()
-        if not placa:
-            return redirect(url_for("saida"))
-        return redirect(url_for("confirmar_saida", placa=placa))
-    return render_template("saida.html", erro=None)
+        placa = request.form["placa"]
+        registro = Estadia.query.filter_by(placa=placa, saida=None).first()
 
+        if not registro:
+            return render_template("saida.html", erro="Placa não encontrada no pátio.")
 
-@app.route("/confirmar_saida")
-def confirmar_saida():
-    placa = request.args.get("placa", "").upper().strip()
-    if not placa:
-        return redirect(url_for("saida"))
+        registro.saida = datetime.now()
+        registro.meio_pagamento = "Dinheiro"
+        registro.valor = 10.0
+        db.session.commit()
 
-    estadia = Estadia.query.filter_by(placa=placa, pago=False, saida=None).first()
-    if not estadia:
-        return render_template("saida.html", erro="Placa não encontrada ou já finalizada.")
+        return redirect("/")
+    return render_template("saida.html")
 
-    agora = datetime.now()
-    estadia.saida = agora
-    valor = estadia.calcular_valor()
-    estadia.valor = valor
-    db.session.commit()
+# ===========================
+# LOGIN DO OPERADOR
+# ===========================
+@app.route("/admin_login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        senha = request.form["senha"]
+        if senha == "1234":
+            return redirect("/admin")
+        return render_template("admin_login.html", erro="Senha incorreta.")
+    return render_template("admin_login.html")
 
-    return render_template(
-        "confirmar_saida.html",
-        placa=estadia.placa,
-        entrada=estadia.entrada,
-        saida=estadia.saida,
-        valor=valor,
-        id=estadia.id
-    )
-
-
-@app.route("/pagar/<int:id>", methods=["POST"])
-def pagar(id):
-    estadia = Estadia.query.get_or_404(id)
-    estadia.pago = True
-    db.session.commit()
-
-    return render_template(
-        "ticket_saida.html",
-        placa=estadia.placa,
-        entrada=estadia.entrada,
-        saida=estadia.saida,
-        valor=estadia.valor
-    )
-
-
+# ===========================
+# RELATÓRIO DO PÁTIO
+# ===========================
 @app.route("/admin")
 def admin():
-    return render_template("admin_login.html", erro=None)
+    registros = Estadia.query.all()
+    return render_template("admin_patio.html", registros=registros)
 
+# ===========================
+# EXPORTAR PARA EXCEL
+# ===========================
+@app.route("/exportar_excel")
+def exportar_excel():
+    registros = Estadia.query.all()
 
-@app.route("/admin_login", methods=["POST"])
-def admin_login():
-    senha = request.form.get("senha", "")
-    if senha == "1234":
-        return redirect(url_for("admin_patio"))
-    return render_template("admin_login.html", erro="Senha incorreta.")
+    dados = []
+    for r in registros:
+        dados.append({
+            "Placa": r.placa,
+            "Entrada": r.entrada,
+            "Saída": r.saida,
+            "Tempo Estacionado": str(r.saida - r.entrada) if r.saida else "",
+            "Meio de Pagamento": r.meio_pagamento if r.meio_pagamento else "",
+            "Valor Pago": r.valor if r.valor else ""
+        })
 
+    df = pd.DataFrame(dados)
+    caminho = "relatorio_prime_park.xlsx"
+    df.to_excel(caminho, index=False)
 
-@app.route("/admin_patio")
-def admin_patio():
-    abertas = Estadia.query.filter_by(pago=False, saida=None).all()
-    return render_template("admin_patio.html", abertas=abertas)
+    return send_file(caminho, as_attachment=True)
 
-
-@app.route("/admin_remover/<int:id>", methods=["POST"])
-def admin_remover(id):
-    estadia = Estadia.query.get_or_404(id)
-    db.session.delete(estadia)
-    db.session.commit()
-    return redirect(url_for("admin_patio"))
-
-
+# ===========================
+# INICIAR
+# ===========================
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

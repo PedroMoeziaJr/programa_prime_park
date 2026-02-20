@@ -1,170 +1,63 @@
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    overflow: hidden; /* impede rolagem */
-}
-
-.screen {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 10px;
-}
-
 /* ===========================
-   TÍTULOS
+   TECLADO LATERAL — VERSÃO AJUSTADA
 =========================== */
-h1 {
-    font-size: 42px;
-    margin: 5px;
-}
 
-p {
-    font-size: 24px;
-}
-
-/* ===========================
-   BOTÕES DA TELA INICIAL
-=========================== */
-.menu-buttons {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.btn-main, .btn-admin, .btn-back {
-    padding: 20px 50px;
-    font-size: 28px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-}
-
-.btn-main {
-    background: #007bff;
-    color: white;
-}
-
-.btn-admin {
-    background: #28a745;
-    color: white;
-}
-
-.btn-back {
-    background: #6c757d;
-    color: white;
-}
-
-/* ===========================
-   CAMPO DE DIGITAÇÃO
-=========================== */
-.placa-input {
-    font-size: 48px;
-    text-align: center;
-    padding: 20px;
-    margin: 20px 0;
-    width: 80%;
-    border-radius: 12px;
-    border: 3px solid #333;
-    background: #ffffff;
-}
-
-/* ===========================
-   TECLADO LATERAL
-=========================== */
 .keyboard-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* usa toda a largura */
     align-items: flex-start;
-    gap: 30px;
-    width: 100%;
-    height: 55vh; /* garante que cabe na tela */
-    overflow: hidden;
+    width: 90vw; /* ocupa quase toda a tela */
+    height: 50vh; /* altura reduzida */
+    padding: 0 20px;
 }
 
-/* LETRAS */
+/* LETRAS — ocupam metade esquerda */
 .keyboard-letters {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas */
+    gap: 15px;
+    width: 60%; /* usa mais espaço */
 }
 
-/* NÚMEROS */
+/* NÚMEROS — coluna à direita */
 .keyboard-numbers {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 20%; /* mais largo para não ficar espremido */
 }
 
-/* LINHAS DE LETRAS */
-.keyboard-row {
-    display: flex;
-    gap: 10px;
-}
-
-/* ===========================
-   TECLAS
-=========================== */
+/* TECLAS */
 .key {
-    padding: 25px 30px;
-    font-size: 32px;
-    border-radius: 10px;
+    padding: 30px;
+    font-size: 36px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    min-width: 90px;
-    min-height: 70px;
+    width: 100%;
 }
 
-.key-letter {
-    background: #007bff;
-    color: white;
-}
-
-.key-number {
-    background: #28a745;
-    color: white;
-}
-
-/* ===========================
-   AÇÕES
-=========================== */
+/* AÇÕES */
 .keyboard-actions {
-    margin-top: 15px;
+    margin-top: 20px;
     display: flex;
-    gap: 30px;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
 }
 
 .key-action {
     background: #dc3545;
     color: white;
-    padding: 20px 40px;
-    font-size: 32px;
-    border-radius: 10px;
+    padding: 25px 50px;
+    font-size: 36px;
+    border-radius: 12px;
 }
 
 .key-confirm {
     background: #ffc107;
     color: #000;
-    padding: 20px 40px;
-    font-size: 32px;
-    border-radius: 10px;
-}
-
-/* ===========================
-   ERROS
-=========================== */
-.erro {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 24px;
+    padding: 25px 50px;
+    font-size: 36px;
+    border-radius: 12px;
 }

@@ -7,7 +7,7 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     background: #f5f5f5;
-    overflow: hidden; /* impede rolagem */
+    overflow: hidden;
 }
 
 .screen {
@@ -79,14 +79,14 @@ p {
 }
 
 /* ===========================
-   TECLADO LATERAL — AJUSTADO
+   TECLADO DE PLACA (ENTRADA/SAÍDA)
 =========================== */
 .keyboard-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 90vw;
-    height: 50vh;
+    height: 48vh;
     padding: 0 20px;
 }
 
@@ -94,24 +94,22 @@ p {
 .keyboard-letters {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
+    gap: 12px;
     width: 60%;
 }
 
-/* NÚMEROS — 2 colunas horizontais */
+/* NÚMEROS — 2 colunas */
 .keyboard-numbers {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 12px;
     width: 25%;
 }
 
-/* ===========================
-   TECLAS
-=========================== */
+/* TECLAS */
 .key {
-    padding: 25px 30px;
-    font-size: 32px;
+    padding: 22px 26px;
+    font-size: 30px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -129,7 +127,7 @@ p {
 }
 
 /* ===========================
-   AÇÕES — BOTÕES MENORES
+   BOTÕES APAGAR / CONFIRMAR
 =========================== */
 .keyboard-actions {
     margin-top: 10px;
@@ -142,17 +140,47 @@ p {
 .key-action {
     background: #dc3545;
     color: white;
-    padding: 15px 30px;   /* reduzido */
-    font-size: 28px;      /* reduzido */
+    padding: 12px 28px;
+    font-size: 26px;
     border-radius: 10px;
 }
 
 .key-confirm {
     background: #ffc107;
     color: #000;
-    padding: 15px 30px;   /* reduzido */
-    font-size: 28px;      /* reduzido */
+    padding: 12px 28px;
+    font-size: 26px;
     border-radius: 10px;
+}
+
+/* ===========================
+   TECLADO DE SENHA (RELATÓRIO DO PÁTIO)
+=========================== */
+.password-input {
+    font-size: 40px;
+    padding: 15px;
+    width: 50%;
+    text-align: center;
+    border-radius: 10px;
+    border: 3px solid #333;
+    margin-bottom: 20px;
+}
+
+.password-keyboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 50%;
+}
+
+.password-key {
+    padding: 20px;
+    font-size: 28px;
+    background: #28a745;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
 }
 
 /* ===========================
@@ -164,4 +192,3 @@ p {
     margin-bottom: 10px;
     font-size: 24px;
 }
-

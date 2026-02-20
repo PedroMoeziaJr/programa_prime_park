@@ -6,17 +6,15 @@ import os
 
 app = Flask(__name__)
 
+# Caminho do banco SQLite
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "prime_park.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-# Criar banco ao iniciar o app
-with app.app_context():
-    db.create_all()
 
 # ==========================
-# MODELO
+# MODELO DO BANCO
 # ==========================
 
 class Estadia(db.Model):
@@ -41,14 +39,22 @@ class Estadia(db.Model):
 
 
 # ==========================
-# ROTAS
+# CRIAÇÃO DO BANCO
 # ==========================
 
+with app.app_context():
+    db.create_all()
+
+
+# ==========================
+# ROTAS
+# ==========================
 
 @app.route("/")
 def index():
     abertas = Estadia.query.filter_by(pago=False, saida=None).all()
     return render_template("index.html", abertas=abertas)
+
 
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
@@ -65,6 +71,7 @@ def entrada():
         return render_template("ticket_entrada.html", placa=placa, entrada=agora)
 
     return render_template("entrada.html")
+
 
 @app.route("/saida", methods=["GET", "POST"])
 def saida():
@@ -91,6 +98,7 @@ def saida():
 
     return render_template("saida.html")
 
+
 @app.route("/pagar/<int:id>", methods=["POST"])
 def pagar(id):
     estadia = Estadia.query.get_or_404(id)
@@ -104,6 +112,7 @@ def pagar(id):
         saida=estadia.saida,
         valor=estadia.valor
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)

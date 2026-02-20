@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Prime Park</h1>
+    <h2>Bem-vindo</h2>
+
+    <div class="container">
+        <a href="/entrada"><button>ENTRADA</button></a>
+        <a href="/saida"><button>SAÍDA</button></a>
+    </div>
+
+    <h3>Carros no pátio</h3>
+    <ul>
+        {% for e in abertas %}
+            <li>{{ e.placa }} — Entrada: {{ e.entrada }}</li>
+        {% else %}
+            <li>Nenhum veículo no pátio.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -11,6 +11,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "p
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
+# Criar banco ao iniciar o app
+with app.app_context():
+    db.create_all()
 
 # ==========================
 # MODELO
@@ -41,9 +44,6 @@ class Estadia(db.Model):
 # ROTAS
 # ==========================
 
-@app.before_first_request
-def criar_banco():
-    db.create_all()
 
 @app.route("/")
 def index():

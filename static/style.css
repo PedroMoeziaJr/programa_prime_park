@@ -7,7 +7,7 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     background: #f5f5f5;
-    overflow: hidden;
+    overflow: hidden; /* impede rolagem */
 }
 
 .screen {
@@ -19,65 +19,109 @@ body {
     padding-top: 10px;
 }
 
-/* TÍTULOS */
+/* ===========================
+   TÍTULOS
+=========================== */
 h1 {
-    font-size: 48px;
+    font-size: 42px;
     margin: 5px;
 }
 
 p {
-    font-size: 26px;
+    font-size: 24px;
 }
 
-/* CAMPO DE DIGITAÇÃO */
+/* ===========================
+   BOTÕES DA TELA INICIAL
+=========================== */
+.menu-buttons {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-main, .btn-admin, .btn-back {
+    padding: 20px 50px;
+    font-size: 28px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.btn-main {
+    background: #007bff;
+    color: white;
+}
+
+.btn-admin {
+    background: #28a745;
+    color: white;
+}
+
+.btn-back {
+    background: #6c757d;
+    color: white;
+}
+
+/* ===========================
+   CAMPO DE DIGITAÇÃO
+=========================== */
 .placa-input {
-    font-size: 64px;
+    font-size: 48px;
     text-align: center;
-    padding: 25px;
+    padding: 20px;
     margin: 20px 0;
-    width: 85%;
-    border-radius: 14px;
-    border: 4px solid #333;
+    width: 80%;
+    border-radius: 12px;
+    border: 3px solid #333;
     background: #ffffff;
 }
 
-/* TECLADO EM DUAS COLUNAS */
+/* ===========================
+   TECLADO LATERAL
+=========================== */
 .keyboard-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 40px;
+    gap: 30px;
     width: 100%;
-    height: 55vh;
+    height: 55vh; /* garante que cabe na tela */
+    overflow: hidden;
 }
 
 /* LETRAS */
 .keyboard-letters {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
-/* NÚMEROS EM COLUNA */
+/* NÚMEROS */
 .keyboard-numbers {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 /* LINHAS DE LETRAS */
 .keyboard-row {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 
-/* TECLAS */
+/* ===========================
+   TECLAS
+=========================== */
 .key {
-    padding: 35px 40px;
-    font-size: 40px;
-    border-radius: 14px;
+    padding: 25px 30px;
+    font-size: 32px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
+    min-width: 90px;
+    min-height: 70px;
 }
 
 .key-letter {
@@ -90,37 +134,37 @@ p {
     color: white;
 }
 
-/* AÇÕES */
+/* ===========================
+   AÇÕES
+=========================== */
 .keyboard-actions {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
-    gap: 40px;
+    gap: 30px;
 }
 
 .key-action {
     background: #dc3545;
     color: white;
-    padding: 30px 60px;
-    font-size: 40px;
-    border-radius: 14px;
+    padding: 20px 40px;
+    font-size: 32px;
+    border-radius: 10px;
 }
 
 .key-confirm {
     background: #ffc107;
     color: #000;
-    padding: 30px 60px;
-    font-size: 40px;
-    border-radius: 14px;
-}
-
-/* BOTÃO VOLTAR */
-.btn-back {
-    margin-top: 20px;
-    padding: 20px 60px;
+    padding: 20px 40px;
     font-size: 32px;
-    background: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
+/* ===========================
+   ERROS
+=========================== */
+.erro {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 24px;
+}

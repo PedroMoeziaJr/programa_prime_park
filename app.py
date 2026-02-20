@@ -3,19 +3,27 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import pandas as pd
 import requests
+import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///primepark.db"
+
+# ===========================
+# BANCO DE DADOS (CAMINHO ABSOLUTO)
+# ===========================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "primepark.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
+
 db = SQLAlchemy(app)
 
 # ===========================
 # CONFIGURAÇÃO FOCUS NFS-e
 # ===========================
-FOCUS_TOKEN = "auZ8OQpPoEnLNMinuuiqZqjTX0m30ehI"  # token de homologação
+FOCUS_TOKEN = "auZ8OQpPoEnLNMinuuiqZqjTX0m30ehI"
 FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse"
 
 # ===========================
-# BANCO DE DADOS
+# MODELO DO BANCO
 # ===========================
 class Estadia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +37,7 @@ class Estadia(db.Model):
     nfse_link = db.Column(db.String(200), nullable=True)
 
 # ===========================
-# FUNÇÃO PARA EMITIR NFS-e
+# EMITIR NFS-e
 # ===========================
 def emitir_nfse(placa, valor):
     ref = f"EST-{placa}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -37,17 +45,17 @@ def emitir_nfse(placa, valor):
 
     dados = {
         "prestador": {
-            "cnpj": "00000000000000",              # CNPJ do estacionamento
-            "inscricao_municipal": "123456",      # IM de Brasília
-            "codigo_municipio": "5300108"         # Brasília
+            "cnpj": "00000000000000",
+            "inscricao_municipal": "123456",
+            "codigo_municipio": "5300108"
         },
         "tomador": {
-            "cpf": "00000000000",                 # pode ser fixo em homologação
+            "cpf": "00000000000",
             "nome": "Cliente Estacionamento"
         },
         "servico": {
             "valor_servicos": float(valor),
-            "item_lista_servico": "11.01",        # estacionamento
+            "item_lista_servico": "11.01",
             "discriminacao": f"Serviço de estacionamento - placa {placa}"
         }
     }
@@ -112,7 +120,6 @@ def saida():
         print("FOCUS STATUS:", status)
         print("FOCUS RESPOSTA:", resposta)
 
-        # salvar dados da nota no banco
         try:
             registro.nfse_status = resposta.get("status")
             registro.nfse_numero = resposta.get("numero")

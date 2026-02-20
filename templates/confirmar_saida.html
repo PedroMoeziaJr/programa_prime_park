@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="utf-8">
+</head>
+<body>
+    <div class="screen">
+        <h1>Confirmar Saída</h1>
+
+        <p>Placa: <strong>{{ placa }}</strong></p>
+        <p>Entrada: {{ entrada }}</p>
+        <p>Saída: {{ saida }}</p>
+        <p>Valor a pagar: R$ {{ "%.2f"|format(valor) }}</p>
+
+        <form method="POST" action="/pagar/{{ id }}">
+            <button type="submit" class="btn-main">CONFIRMAR PAGAMENTO</button>
+        </form>
+
+        <a href="/saida"><button class="btn-back">VOLTAR</button></a>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 10000);
+    </script>
+</body>
+</html>

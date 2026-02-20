@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Pagamento</h1>
+
+    <p>Placa: {{ placa }}</p>
+    <p>Entrada: {{ entrada }}</p>
+    <p>Saída: {{ saida }}</p>
+    <p>Valor a pagar: R$ {{ "%.2f"|format(valor) }}</p>
+
+    <form method="POST" action="/pagar/{{ id }}">
+        <button type="submit">CONFIRMAR PAGAMENTO</button>
+    </form>
+
+    <a href="/"><button>CANCELAR</button></a>
+</body>
+</html>

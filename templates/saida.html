@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Registrar Saída</h1>
+
+    {% if erro %}
+        <p style="color:red;">{{ erro }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <label>Placa:</label>
+        <input type="text" name="placa" required autofocus>
+        <button type="submit">BUSCAR</button>
+    </form>
+
+    <a href="/"><button>VOLTAR</button></a>
+</body>
+</html>

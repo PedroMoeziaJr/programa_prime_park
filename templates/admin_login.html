@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="utf-8">
+</head>
+<body>
+    <div class="screen">
+        <h1>Relatório do Pátio</h1>
+        <p>Digite a senha do operador.</p>
+
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST" action="/admin_login" id="form-admin">
+            <input type="password" name="senha" id="senha" maxlength="8" readonly class="placa-input">
+
+            <div class="keyboard">
+                <div class="keyboard-row">
+                    <button type="button" class="key key-number">1</button>
+                    <button type="button" class="key key-number">2</button>
+                    <button type="button" class="key key-number">3</button>
+                </div>
+                <div class="keyboard-row">
+                    <button type="button" class="key key-number">4</button>
+                    <button type="button" class="key key-number">5</button>
+                    <button type="button" class="key key-number">6</button>
+                </div>
+                <div class="keyboard-row">
+                    <button type="button" class="key key-number">7</button>
+                    <button type="button" class="key key-number">8</button>
+                    <button type="button" class="key key-number">9</button>
+                </div>
+                <div class="keyboard-row">
+                    <button type="button" class="key key-number">0</button>
+                    <button type="button" class="key key-action" id="backspace">APAGAR</button>
+                    <button type="submit" class="key key-confirm">ENTRAR</button>
+                </div>
+            </div>
+        </form>
+
+        <a href="/"><button class="btn-back">VOLTAR</button></a>
+    </div>
+
+    <script>
+        let input = document.getElementById("senha");
+        const keys = document.querySelectorAll(".key-number");
+        const backspace = document.getElementById("backspace");
+
+        keys.forEach(k => {
+            k.addEventListener("click", () => {
+                if (input.value.length < 8) {
+                    input.value += k.textContent;
+                }
+            });
+        });
+
+        backspace.addEventListener("click", () => {
+            input.value = input.value.slice(0, -1);
+        });
+
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 10000);
+    </script>
+</body>
+</html>

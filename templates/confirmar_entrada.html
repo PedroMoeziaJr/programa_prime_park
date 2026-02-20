@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/static/style.css">
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="screen">
-        <h1>Confirmar Placa</h1>
+        <h1>Confirmar Entrada</h1>
         <p>Placa digitada:</p>
-        <h2 class="placa-display">{{ placa }}</h2>
 
-        <form method="POST" action="/confirmar_entrada_ok">
+        <h1 style="font-size:70px; margin:20px;">{{ placa }}</h1>
+
+        <form method="POST" action="/confirmar_entrada">
             <input type="hidden" name="placa" value="{{ placa }}">
-            <button type="submit" class="btn-main">CONFIRMAR</button>
+            <button type="submit" class="btn-main" style="font-size:40px; padding:20px 60px;">CONFIRMAR</button>
         </form>
 
-        <a href="/entrada"><button class="btn-back">VOLTAR</button></a>
+        <a href="/entrada">
+            <button class="btn-back" style="margin-top:20px;">VOLTAR</button>
+        </a>
     </div>
-
-    <script>
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 30000);
-    </script>
 </body>
 </html>

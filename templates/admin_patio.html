@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/static/style.css">
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="screen">
-        <h1>Carros no Pátio</h1>
+    <div class="screen admin-screen">
+        <h1>Relatório do Pátio</h1>
 
-        {% if abertas %}
-            <table class="patio-table">
-                <tr>
-                    <th>Placa</th>
-                    <th>Entrada</th>
-                    <th>Ações</th>
-                </tr>
-                {% for e in abertas %}
-                <tr>
-                    <td>{{ e.placa }}</td>
-                    <td>{{ e.entrada }}</td>
-                    <td>
-                        <form method="POST" action="/admin_remover/{{ e.id }}">
-                            <button type="submit" class="btn-remove">REMOVER</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <p>Nenhum veículo no pátio.</p>
-        {% endif %}
+        <a href="/exportar_excel">
+            <button class="btn-admin" style="margin-bottom:20px;">EXPORTAR PARA EXCEL</button>
+        </a>
+
+        <table border="1" cellpadding="10" style="background:white; font-size:22px;">
+            <tr>
+                <th>Placa</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Tempo Estacionado</th>
+                <th>Meio de Pagamento</th>
+                <th>Valor</th>
+            </tr>
+
+            {% for r in registros %}
+            <tr>
+                <td>{{ r.placa }}</td>
+                <td>{{ r.entrada }}</td>
+                <td>{{ r.saida if r.saida else "" }}</td>
+                <td>
+                    {% if r.saida %}
+                        {{ r.saida - r.entrada }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ r.meio_pagamento if r.meio_pagamento else "" }}</td>
+                <td>{{ r.valor if r.valor else "" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
 
         <a href="/"><button class="btn-back">VOLTAR</button></a>
     </div>
-
-    <script>
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 30000);
-    </script>
 </body>
 </html>

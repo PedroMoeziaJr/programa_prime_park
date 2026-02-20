@@ -2,10 +2,17 @@ from flask import Flask, render_template, request, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import pandas as pd
+import requests
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///primepark.db"
 db = SQLAlchemy(app)
+
+# ===========================
+# CONFIGURAÇÃO FOCUS NFS-e
+# ===========================
+FOCUS_TOKEN = "auZ8OQpPoEnLNMinuuiqZqjTX0m30ehI"  # token de homologação
+FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse"
 
 # ===========================
 # BANCO DE DADOS
@@ -17,6 +24,40 @@ class Estadia(db.Model):
     saida = db.Column(db.DateTime, nullable=True)
     meio_pagamento = db.Column(db.String(20), nullable=True)
     valor = db.Column(db.Float, nullable=True)
+    nfse_status = db.Column(db.String(50), nullable=True)
+    nfse_numero = db.Column(db.String(50), nullable=True)
+    nfse_link = db.Column(db.String(200), nullable=True)
+
+# ===========================
+# FUNÇÃO PARA EMITIR NFS-e
+# ===========================
+def emitir_nfse(placa, valor):
+    ref = f"EST-{placa}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    url = f"{FOCUS_URL}?ref={ref}"
+
+    dados = {
+        "prestador": {
+            "cnpj": "00000000000000",              # CNPJ do estacionamento
+            "inscricao_municipal": "123456",      # IM de Brasília
+            "codigo_municipio": "5300108"         # Brasília
+        },
+        "tomador": {
+            "cpf": "00000000000",                 # pode ser fixo em homologação
+            "nome": "Cliente Estacionamento"
+        },
+        "servico": {
+            "valor_servicos": float(valor),
+            "item_lista_servico": "11.01",        # estacionamento
+            "discriminacao": f"Serviço de estacionamento - placa {placa}"
+        }
+    }
+
+    r = requests.post(url, json=dados, auth=(FOCUS_TOKEN, ""))
+
+    try:
+        return r.status_code, r.json()
+    except:
+        return r.status_code, {"erro": r.text}
 
 # ===========================
 # TELA INICIAL
@@ -26,7 +67,7 @@ def index():
     return render_template("index.html")
 
 # ===========================
-# ENTRADA — DIGITAÇÃO DA PLACA
+# ENTRADA
 # ===========================
 @app.route("/entrada", methods=["GET", "POST"])
 def entrada():
@@ -47,9 +88,6 @@ def confirmar_entrada():
     db.session.add(nova)
     db.session.commit()
 
-    # Aqui você pode chamar a impressora se quiser
-    # imprimir_ticket(placa)
-
     return redirect("/")
 
 # ===========================
@@ -69,7 +107,22 @@ def saida():
         registro.valor = 10.0
         db.session.commit()
 
+        # EMITIR NFS-e
+        status, resposta = emitir_nfse(placa, registro.valor)
+        print("FOCUS STATUS:", status)
+        print("FOCUS RESPOSTA:", resposta)
+
+        # salvar dados da nota no banco
+        try:
+            registro.nfse_status = resposta.get("status")
+            registro.nfse_numero = resposta.get("numero")
+            registro.nfse_link = resposta.get("caminho_xml")
+            db.session.commit()
+        except:
+            pass
+
         return redirect("/")
+
     return render_template("saida.html")
 
 # ===========================
@@ -107,7 +160,10 @@ def exportar_excel():
             "Saída": r.saida,
             "Tempo Estacionado": str(r.saida - r.entrada) if r.saida else "",
             "Meio de Pagamento": r.meio_pagamento if r.meio_pagamento else "",
-            "Valor Pago": r.valor if r.valor else ""
+            "Valor Pago": r.valor if r.valor else "",
+            "Status NFS-e": r.nfse_status if r.nfse_status else "",
+            "Número NFS-e": r.nfse_numero if r.nfse_numero else "",
+            "Link XML": r.nfse_link if r.nfse_link else ""
         })
 
     df = pd.DataFrame(dados)
@@ -123,3 +179,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+

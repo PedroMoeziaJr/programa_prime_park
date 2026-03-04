@@ -44,6 +44,7 @@ def emitir_nfse(placa, valor):
     url = f"{FOCUS_URL}?ref={ref}"
 
     dados = {
+        "data_emissao_rps": datetime.now().strftime("%Y-%m-%dT%H:%M"),  # ← AGORA NO LUGAR CERTO
         "prestador": {
             "cnpj": "08505544000117",
             "inscricao_municipal": "0748271200137",
@@ -57,8 +58,7 @@ def emitir_nfse(placa, valor):
             "valor_servicos": float(valor),
             "item_lista_servico": "11.01",
             "discriminacao": f"Serviço de estacionamento - placa {placa}",
-            "codigo_municipio": "5300108",
-            "data_emissao_rps": datetime.now().strftime("%Y-%m-%dT%H:%M")
+            "codigo_municipio": "5300108"
         }
     }
 

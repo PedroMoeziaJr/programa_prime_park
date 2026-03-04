@@ -58,7 +58,7 @@ def emitir_nfse(placa, valor):
             "item_lista_servico": "11.01",
             "discriminacao": f"Serviço de estacionamento - placa {placa}",
             "codigo_municipio": "5300108",
-            "data_emissao": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            "data_emissao": datetime.now().strftime("%Y-%m-%dT%H:%M")  # ← sem segundos
         }
     }
 
@@ -72,7 +72,6 @@ def emitir_nfse(placa, valor):
         return r.status_code, r.json()
     except:
         return r.status_code, {"erro": r.text}
-
 # ===========================
 # TELA INICIAL
 # ===========================

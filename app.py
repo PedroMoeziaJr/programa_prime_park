@@ -56,7 +56,8 @@ def emitir_nfse(placa, valor):
         "servico": {
             "valor_servicos": float(valor),
             "item_lista_servico": "11.01",
-            "discriminacao": f"Serviço de estacionamento - placa {placa}"
+            "discriminacao": f"Serviço de estacionamento - placa {placa}",
+            "data_emissao": datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
     }
 

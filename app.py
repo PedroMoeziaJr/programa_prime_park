@@ -44,7 +44,12 @@ def emitir_nfse(placa, valor):
     url = f"{FOCUS_URL}?ref={ref}"
 
     dados = {
-        "data_emissao_rps": datetime.now().strftime("%Y-%m-%dT%H:%M"),  # ← AGORA NO LUGAR CERTO
+        "rps": {
+            "numero": "1",
+            "serie": "UNICA",
+            "tipo": "1"
+        },
+        "data_emissao_rps": datetime.now().strftime("%Y-%m-%dT%H:%M"),
         "prestador": {
             "cnpj": "08505544000117",
             "inscricao_municipal": "0748271200137",

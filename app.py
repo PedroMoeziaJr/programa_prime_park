@@ -62,6 +62,10 @@ def emitir_nfse(placa, valor):
         }
     }
 
+    print("\n===== JSON ENVIADO PARA A FOCUS =====")
+    print(dados)
+    print("=====================================\n")
+
     r = requests.post(url, json=dados, auth=(FOCUS_TOKEN, ""))
 
     try:

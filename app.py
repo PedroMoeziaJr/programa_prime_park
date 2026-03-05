@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 # ===========================
-# BANCO DE DADOS (CAMINHO ABSOLUTO)
+# BANCO DE DADOS
 # ===========================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "primepark.db")
@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 # CONFIGURAÇÃO FOCUS NFS-e
 # ===========================
 FOCUS_TOKEN = "auZ8OQpPoEnLNMinuuiqZqjTX0m30ehI"
-FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse"
+FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse/issnet"  # ENDPOINT CORRETO PARA BRASÍLIA
 
 # ===========================
 # MODELO DO BANCO
@@ -37,33 +37,37 @@ class Estadia(db.Model):
     nfse_link = db.Column(db.String(200), nullable=True)
 
 # ===========================
-# EMITIR NFS-e
+# EMITIR NFS-e (BRASÍLIA – ISSNET)
 # ===========================
 def emitir_nfse(placa, valor):
     ref = f"EST-{placa}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
     url = f"{FOCUS_URL}?ref={ref}"
 
     dados = {
-        "rps": {
-            "numero": datetime.now().strftime("%Y%m%d%H%M%S"),  # RPS ÚNICO
-            "serie": "UNICA",
-            "tipo": "1"
-        },
-        "data_emissao_rps": datetime.now().strftime("%Y-%m-%dT%H:%M"),
+        "data_emissao": datetime.now().strftime("%Y-%m-%dT%H:%M"),
+        "natureza_operacao": 1,
+        "optante_simples_nacional": True,
+        "regime_especial_tributacao": 0,
+
         "prestador": {
-            "cnpj": "08505544000117",
-            "inscricao_municipal": "0748271200137",
-            "codigo_municipio": "5300108"
+            "cnpj": "08585544000117",
+            "inscricao_municipal": "0748271200173",
+            "codigo_municipio": 5300108
         },
+
         "tomador": {
             "cpf": "00000000000",
             "nome": "Cliente Estacionamento"
         },
+
         "servico": {
             "valor_servicos": float(valor),
             "item_lista_servico": "11.01",
+            "codigo_tributario_municipio": "11.01",
+            "codigo_cnae": "5223000",
             "discriminacao": f"Serviço de estacionamento - placa {placa}",
-            "codigo_municipio": "5300108"
+            "codigo_municipio": 5300108,
+            "iss_retido": False
         }
     }
 
@@ -77,6 +81,7 @@ def emitir_nfse(placa, valor):
         return r.status_code, r.json()
     except:
         return r.status_code, {"erro": r.text}
+
 # ===========================
 # TELA INICIAL
 # ===========================

@@ -45,7 +45,7 @@ def emitir_nfse(placa, valor):
 
     dados = {
         "rps": {
-            "numero": "1",
+            "numero": datetime.now().strftime("%Y%m%d%H%M%S"),  # RPS ÚNICO
             "serie": "UNICA",
             "tipo": "1"
         },
@@ -77,7 +77,6 @@ def emitir_nfse(placa, valor):
         return r.status_code, r.json()
     except:
         return r.status_code, {"erro": r.text}
-
 # ===========================
 # TELA INICIAL
 # ===========================

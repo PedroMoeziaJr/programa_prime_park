@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 # CONFIGURAÇÃO FOCUS NFS-e
 # ===========================
 FOCUS_TOKEN = "auZ8OQpPoEnLNMinuuiqZqjTX0m30ehI"
-FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse/issnet"  # ENDPOINT CORRETO PARA BRASÍLIA
+FOCUS_URL = "https://homologacao.focusnfe.com.br/v2/nfse"  # BRASÍLIA USA ESTE ENDPOINT
 
 # ===========================
 # MODELO DO BANCO
@@ -48,6 +48,7 @@ def emitir_nfse(placa, valor):
         "natureza_operacao": 1,
         "optante_simples_nacional": True,
         "regime_especial_tributacao": 0,
+        "serie": "8",  # SÉRIE DE HOMOLOGAÇÃO PARA BRASÍLIA
 
         "prestador": {
             "cnpj": "08585544000117",
@@ -57,7 +58,15 @@ def emitir_nfse(placa, valor):
 
         "tomador": {
             "cpf": "00000000000",
-            "nome": "Cliente Estacionamento"
+            "nome": "Cliente Estacionamento",
+            "endereco": {
+                "logradouro": "Sem endereço",
+                "numero": "0",
+                "bairro": "Sem bairro",
+                "codigo_municipio": 5300108,
+                "uf": "DF",
+                "cep": "70000000"
+            }
         },
 
         "servico": {

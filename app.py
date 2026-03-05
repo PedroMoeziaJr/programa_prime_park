@@ -48,7 +48,7 @@ def emitir_nfse(placa, valor):
         "natureza_operacao": 1,
         "optante_simples_nacional": True,
         "regime_especial_tributacao": 0,
-        "serie": "8",  # SÉRIE DE HOMOLOGAÇÃO PARA BRASÍLIA
+        "serie": "2",  # SÉRIE DE HOMOLOGAÇÃO PARA BRASÍLIA
 
         "prestador": {
             "cnpj": "08585544000117",
